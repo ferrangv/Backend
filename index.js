@@ -1,9 +1,13 @@
 const express = require('express');
+const cors = require('cors'); 
 const { Sequelize, DataTypes } = require('sequelize');
 
 // Crear una instancia de Express
 const app = express();
 const port = 3000;
+
+// Configurar CORS para permitir solicitudes desde cualquier origen
+app.use(cors());
 
 // Configurar Sequelize para conectarse a la base de datos PostgreSQL
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
@@ -30,7 +34,7 @@ sequelize.sync().then(() => {
 
 // Rutas del servidor
 
-// Ruta para obtener la última medición
+// Ruta para obtener la ï¿½ltima mediciï¿½n
 app.get('/ultima-medicion', async (req, res) => {
   const ultimaMedicion = await Medicion.findOne({ order: [['createdAt', 'DESC']] });
   if (ultimaMedicion) {
@@ -40,18 +44,18 @@ app.get('/ultima-medicion', async (req, res) => {
   }
 });
 
-// Ruta para agregar una nueva medición
+// Ruta para agregar una nueva mediciï¿½n
 app.post('/mediciones', express.json(), async (req, res) => {
   const { medicion, valor } = req.body;
   if (medicion && valor) {
     const nuevaMedicion = await Medicion.create({ medicion, valor });
     res.status(201).json(nuevaMedicion);
   } else {
-    res.status(400).json({ error: 'Faltan parámetros' });
+    res.status(400).json({ error: 'Faltan parï¿½metros' });
   }
 });
 
 // Iniciar el servidor
 app.listen(port, () => {
-  console.log(`Servidor ejecutándose en http://localhost:${port}`);
+  console.log(`Servidor ejecutï¿½ndose en http://localhost:${port}`);
 });
